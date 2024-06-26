@@ -14,9 +14,15 @@ class Books extends Model
     protected $fillable = [
         'title',
         'author',
+        'bookAdder',
         'publicDate',
         'category',
         'price',
         'quantity'
     ];
+
+    public function bookImgs(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(BookImgs::class, 'book_id');
+    }
 }

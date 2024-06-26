@@ -11,13 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
-            $table->uuid('id');
-            $table->string('userName',50);
-            $table->string('email', 100);
-            $table->string('password', 100);
-            $table->text('apiToken')->nullable();
-            $table->timestamps();
+        //
+        Schema::table('books', function (Blueprint $table) {
+            $table->string('bookAdder', 100)->after('author');
         });
     }
 
@@ -26,6 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        //
     }
 };

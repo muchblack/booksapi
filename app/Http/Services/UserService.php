@@ -11,7 +11,8 @@ class UserService
         $this->users = $users;
     }
 
-    public function getLogin($data){
+    public function getLogin($data): array
+    {
         $user = $this->users->where('email', $data['email'])->first();
         if($user)
         {
@@ -32,7 +33,7 @@ class UserService
         }
     }
 
-    public function setRegister($data)
+    public function setRegister($data): array
     {
         $user = $this->users->where('email', $data['email'])->first();
         if($user)
@@ -49,6 +50,20 @@ class UserService
 
             return ['status'=> 0, 'msg' => 'user has been created'];
         }
+    }
+
+    public function getUserFromApiToken($apiToken) {
+        $user = $this->users->where('apiToken',$apiToken)->first();
+        if($user)
+        {
+            return $user;
+        }
+        return [];
+    }
+
+    public function getAllUsers(): \Illuminate\Database\Eloquent\Collection
+    {
+        return $this->users->all();
     }
 
 }

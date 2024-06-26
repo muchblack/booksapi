@@ -11,12 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('book_edit_logs', function (Blueprint $table) {
             $table->uuid('id');
-            $table->string('userName',50);
-            $table->string('email', 100);
-            $table->string('password', 100);
-            $table->text('apiToken')->nullable();
+            $table->string('userID',100);
+            $table->enum('editAction',['add', 'update', 'delete']);
             $table->timestamps();
         });
     }
@@ -26,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('book_edit_logs');
     }
 };

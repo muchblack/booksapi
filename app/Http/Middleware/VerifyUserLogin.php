@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Illuminate\Support\Facades\Session;
+use App\Models\Users;
 
 class VerifyUserLogin
 {
@@ -16,7 +16,29 @@ class VerifyUserLogin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        dd($request->header('Authorization'));
-        return $next($request);
+        if($request->header('Authorization')){
+            $model = new Users();
+            $user = $model->where('apiToken', $request->header('Authorization'))->first();
+            $nowTime = time();
+            if($user)
+            {
+                if( ($nowTime-strtotime($user->updated_at)) >=3600 )
+                {
+                    $user->apiToken = null;
+                    $user->save();
+                    return response()->json(['msg'=>'must login1'], 419);
+                }
+                else
+                {
+                    return $next($request);
+                }
+            }
+            else
+            {
+                return response()->json(['msg'=>'must login2'], 419);
+            }
+        }else{
+            return response()->json(['msg'=>'must login3'], 419);
+        }
     }
 }
